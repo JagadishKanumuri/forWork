@@ -13,3 +13,9 @@ insert into Customer1 values('hari',20,'male',7777);
 select * from Customer1;
 
 drop table Customer1;
+
+delete from Customer1 where name='hari';
+
+update Customer1 set age=20 ,gender='male', phone=9988 where name='hari';
+
+select * from Customer1 where name='nikilendra';

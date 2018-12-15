@@ -13,6 +13,7 @@ public class Dao {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
+	//Viewing All Customers in PG
 	ArrayList<Customer> alist = new ArrayList<Customer>();
 	public ArrayList<Customer> viewdetails() {
 		try {
@@ -22,11 +23,6 @@ public class Dao {
 			while(rs.next())
 			{
 				Customer c = new Customer(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getInt(4));
-				//Customer c = new Customer();
-				//c.setName(rs.getString(1));
-				//c.setAge(rs.getInt(2));
-				//c.setGender(rs.getString(3));
-               //c.setPhone(rs.getInt(4));
 				alist.add(c);
 				
 			}
@@ -36,6 +32,8 @@ public class Dao {
 		}
 		return alist;
 	}
+	
+	//Registration in PG
 	public int insert(Customer c) {
 		int i =0;
 		try {
@@ -59,5 +57,67 @@ public class Dao {
 	{
 		
 	}
+	//Deleting of Customer from PG
+	public int delete(String name) {
+		int i =0;
+		try {
+			con = DatabaseUtil.getConnection();
+			ps = con.prepareStatement("delete from Customer1 where name=?");
+			ps.setString(1, name);
+			 i= ps.executeUpdate();
+			if(i>0)
+			{
+				return 1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	//Updating Customer Details in PG
+	public int update(Customer c) {
+		int i =0;
+		try {
+			con = DatabaseUtil.getConnection();
+			ps = con.prepareStatement("update Customer1 set age=? ,gender=?, phone=? where name=?");
+			ps.setInt(1, c.getAge());
+			ps.setString(2, c.getGender());
+			ps.setInt(3, c.getPhone());
+			ps.setString(4, c.getName());
+			i = ps.executeUpdate();
+			if(i>0)
+			{
+				return 1;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	//Searching Customer Details by Name
+	public ArrayList<Customer> search(String name)
+	
+	{
+		ArrayList<Customer> alist = new ArrayList<Customer>();
+		try {
+			con = DatabaseUtil.getConnection();
+			ps = con.prepareStatement("select * from Customer1 where name=?");
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			while(rs.next())
+			{
+				Customer c = new Customer(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getInt(4));
+				alist.add(c);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return alist;
+	
+	}
+		
 	
 }

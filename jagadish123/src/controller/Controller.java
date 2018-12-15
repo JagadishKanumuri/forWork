@@ -13,26 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 import bean.Customer;
 import service.Service;
 
-/**
- * Servlet implementation class Controller
- */
+
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+  
     public Controller() {
         super();
-        // TODO Auto-generated constructor stub
+     
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String action = request.getParameter("action");
 		Service service = new Service();
@@ -65,16 +59,60 @@ public class Controller extends HttpServlet {
 				
 			}
 			
-			
+		}
+		if("delete".equalsIgnoreCase(action))
+		{
+			String name = request.getParameter("name");
+			int i = service.delete(name);
+		
+			if(i>0)
+			{
+				RequestDispatcher rd= request.getRequestDispatcher("success.jsp");
+				rd.forward(request, response);
+			}
+			else {
+				RequestDispatcher rd= request.getRequestDispatcher("fail.jsp");
+				rd.forward(request, response);
+			}
 			
 		}
+		if("update".equalsIgnoreCase(action))
+		{
+			String name = request.getParameter("name");
+			int age = Integer.parseInt(request.getParameter("age"));
+			String gender = request.getParameter("gender");
+			int phone = Integer.parseInt(request.getParameter("phone"));
+			Customer c = new Customer(name, age, gender, phone);
+			int i = service.update(c);
+			if(i>0)
+			{
+				RequestDispatcher rd = request.getRequestDispatcher("success.jsp");
+				rd.forward(request, response);
+			}
+			else
+			{
+				RequestDispatcher rd = request.getRequestDispatcher("fail.jsp");
+				rd.forward(request, response);
+			}
+		}
+		if("search".equalsIgnoreCase(action))
+		{
+			String name = request.getParameter("name");
+			ArrayList<Customer> customer = service.search(name);
+			if(customer.size()!=0)
+			{
+				request.setAttribute("alist", customer);
+				RequestDispatcher rd = request.getRequestDispatcher("viewsearch.jsp");
+				rd.forward(request, response);
+			}
+		}
+		
+			
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

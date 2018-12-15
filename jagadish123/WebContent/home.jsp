@@ -14,7 +14,10 @@
 <p align= "Center"><a style="color:white" href= "Controller?action=view">List of Men and Women in PG</a></p>
 <br></br>
 <p align= "Center"><a style="color:white" href= "insert.jsp">Register in PG</a></p>
+<br></br>
+<p align= "Center"><a style="color:white" href= "update.jsp">Update Details of Customers in PG</a></p>
 
+<p align= "Center"><a style="color:white" href= "search.jsp">Search Customer in PG</a></p>
 
 </body>
 </html>
